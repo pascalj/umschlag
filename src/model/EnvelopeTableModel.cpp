@@ -7,8 +7,9 @@
 
 namespace model {
 
-EnvelopeTableModel::EnvelopeTableModel(int year, uint8_t month, QObject *parent)
-    : QAbstractTableModel(parent), year(year), month(month) {
+
+EnvelopeTableModel::EnvelopeTableModel(Month month, QObject *parent)
+    : QAbstractTableModel(parent), month(month) {
   QSqlQuery query;
   query.prepare(
       "SELECT categories.name, envelopes.budget, SUM(transactions.cents) "
@@ -17,8 +18,8 @@ EnvelopeTableModel::EnvelopeTableModel(int year, uint8_t month, QObject *parent)
       "LEFT JOIN transactions ON envelopes.category_id = transactions.category_id "
       "WHERE strftime(\"%Y-%m\", transactions.date) = (:year || '-' || :month) "
       "GROUP BY transactions.category_id ");
-  query.bindValue(":year", year);
-  query.bindValue(":month", month);
+  query.bindValue(":year", month.year);
+  query.bindValue(":month", month.month);
   query.exec();
   base.setQuery(query);
 }

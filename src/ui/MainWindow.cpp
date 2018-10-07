@@ -16,24 +16,25 @@ MainWindow::MainWindow(QWidget *parent)
 
   tableView = new QTableView(this);
   setCentralWidget(tableView);
-  showMonth(2018, 10);
+  model::Month month{2018, 10};
+  showMonth(month);
 }
 
-void MainWindow::showMonth(int year, uint8_t month) {
-  loadOrInsertMonth(year, month);
-  model::EnvelopeTableModel *model = new model::EnvelopeTableModel(year, month);
+void MainWindow::showMonth(model::Month month) {
+  loadOrInsertMonth(month);
+  model::EnvelopeTableModel *model = new model::EnvelopeTableModel(month);
   tableView->setModel(model);
   tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   qDebug() << model->rowCount();
 }
 
-void MainWindow::loadOrInsertMonth(int year, int month) {
+void MainWindow::loadOrInsertMonth(model::Month month) {
   QSqlQuery query;
   query.prepare("INSERT INTO envelopes (category_id, year, month)"
                 "SELECT categories.id, :year, :month FROM "
                 "categories");
-  query.bindValue(":year", year);
-  query.bindValue(":month", month);
+  query.bindValue(":year", month.year);
+  query.bindValue(":month", month.month);
   query.exec();
 }
 

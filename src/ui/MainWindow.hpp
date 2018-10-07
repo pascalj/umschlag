@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QTableView>
+#include "../model/EnvelopeTableModel.hpp"
 
 
 namespace ui {
@@ -13,10 +14,10 @@ class MainWindow : public QMainWindow {
 public:
   MainWindow(QWidget *parent = nullptr);
 
-  void showMonth(int year, uint8_t month);
+  void showMonth(model::Month);
 private:
   bool initializeDatabase();
-  void loadOrInsertMonth(int year, int month);
+  void loadOrInsertMonth(model::Month);
 
 private:
   QTableView *tableView;

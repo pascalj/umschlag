@@ -5,11 +5,17 @@
 
 
 namespace model {
+
+struct Month {
+  unsigned int year;
+  uint8_t month;
+};
+
 class EnvelopeTableModel : public QAbstractTableModel {
   Q_OBJECT
 
 public:
-  EnvelopeTableModel(int year, uint8_t month, QObject *parent = nullptr);
+  EnvelopeTableModel(Month month, QObject *parent = nullptr);
   QVariant data(const QModelIndex &index,
                         int role) const override;
   int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -21,8 +27,7 @@ public:
 
 private:
   QSqlQueryModel base;
-  int year;
-  uint8_t month;
+  Month month;
 };
 }
 
