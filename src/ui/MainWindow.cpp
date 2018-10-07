@@ -1,12 +1,15 @@
 #include "MainWindow.hpp"
+#include "../model/EnvelopeTableModel.hpp"
+#include <QDebug>
+#include <QHeaderView>
+#include <QPushButton>
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
 #include <QSqlRelationalTableModel>
 #include <QTableView>
-#include <QHeaderView>
-#include <QDebug>
-#include "../model/EnvelopeTableModel.hpp"
+#include <QLayout>
+#include "MonthPicker.hpp"
 
 namespace ui {
 
@@ -14,9 +17,17 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), db(QSqlDatabase::addDatabase("QSQLITE")) {
   initializeDatabase();
 
+  QWidget *mainWidget = new QWidget;
   tableView = new QTableView(this);
-  setCentralWidget(tableView);
+  auto monthPicker = new ui::MonthPicker(this);
+
+  QVBoxLayout *layout = new QVBoxLayout;
+  layout->addWidget(monthPicker);
+  layout->addWidget(tableView);
+  mainWidget->setLayout(layout);
+  setCentralWidget(mainWidget);
   model::Month month{2018, 10};
+  QObject::connect(monthPicker, SIGNAL(monthChanged(model::Month)), this, SLOT(showMonth(model::Month)));
   showMonth(month);
 }
 
@@ -25,7 +36,6 @@ void MainWindow::showMonth(model::Month month) {
   model::EnvelopeTableModel *model = new model::EnvelopeTableModel(month);
   tableView->setModel(model);
   tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-  qDebug() << model->rowCount();
 }
 
 void MainWindow::loadOrInsertMonth(model::Month month) {

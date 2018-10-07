@@ -14,7 +14,9 @@ class MainWindow : public QMainWindow {
 public:
   MainWindow(QWidget *parent = nullptr);
 
+public slots:
   void showMonth(model::Month);
+
 private:
   bool initializeDatabase();
   void loadOrInsertMonth(model::Month);

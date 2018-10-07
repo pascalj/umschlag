@@ -8,7 +8,7 @@ namespace model {
 
 struct Month {
   unsigned int year;
-  uint8_t month;
+  unsigned int month;
 };
 
 class EnvelopeTableModel : public QAbstractTableModel {
