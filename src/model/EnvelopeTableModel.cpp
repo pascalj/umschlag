@@ -1,13 +1,13 @@
-#include "EnvelopeTable.hpp"
+#include "EnvelopeTableModel.hpp"
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
 #include <QLocale>
 
-namespace ui {
+namespace model {
 
-EnvelopeTable::EnvelopeTable(int year, uint8_t month, QObject *parent)
+EnvelopeTableModel::EnvelopeTableModel(int year, uint8_t month, QObject *parent)
     : QAbstractTableModel(parent), year(year), month(month) {
   QSqlQuery query;
   query.prepare(
@@ -23,7 +23,7 @@ EnvelopeTable::EnvelopeTable(int year, uint8_t month, QObject *parent)
   base.setQuery(query);
 }
 
-QVariant EnvelopeTable::data(const QModelIndex &index,
+QVariant EnvelopeTableModel::data(const QModelIndex &index,
                              int role = Qt::DisplayRole) const {
   if (role != Qt::DisplayRole) {
     return QVariant();
@@ -38,17 +38,17 @@ QVariant EnvelopeTable::data(const QModelIndex &index,
   }
 }
 
-int EnvelopeTable::columnCount(const QModelIndex &) const {
+int EnvelopeTableModel::columnCount(const QModelIndex &) const {
   return 3;
 }
 
-int EnvelopeTable::rowCount(const QModelIndex &parent) const {
+int EnvelopeTableModel::rowCount(const QModelIndex &parent) const {
   return base.rowCount(parent);
 }
 
-bool EnvelopeTable::hasChildren(const QModelIndex &) const { return false; }
+bool EnvelopeTableModel::hasChildren(const QModelIndex &) const { return false; }
 
-QVariant EnvelopeTable::headerData(int section, Qt::Orientation orientation,
+QVariant EnvelopeTableModel::headerData(int section, Qt::Orientation orientation,
 
 
                                    int role) const {
@@ -70,7 +70,7 @@ QVariant EnvelopeTable::headerData(int section, Qt::Orientation orientation,
   return ret;
 }
 
-Qt::ItemFlags EnvelopeTable::flags(const QModelIndex &index) const {
+Qt::ItemFlags EnvelopeTableModel::flags(const QModelIndex &index) const {
   if (!index.isValid())
     return Qt::ItemIsEnabled;
 

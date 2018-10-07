@@ -6,7 +6,7 @@
 #include <QTableView>
 #include <QHeaderView>
 #include <QDebug>
-#include "EnvelopeTable.hpp"
+#include "../model/EnvelopeTableModel.hpp"
 
 namespace ui {
 
@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::showMonth(int year, uint8_t month) {
   loadOrInsertMonth(year, month);
-  EnvelopeTable *model = new ui::EnvelopeTable(year, month);
+  model::EnvelopeTableModel *model = new model::EnvelopeTableModel(year, month);
   tableView->setModel(model);
   tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   qDebug() << model->rowCount();

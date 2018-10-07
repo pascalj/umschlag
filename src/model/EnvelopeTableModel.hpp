@@ -4,12 +4,12 @@
 #include <QSqlQueryModel>
 
 
-namespace ui {
-class EnvelopeTable : public QAbstractTableModel {
+namespace model {
+class EnvelopeTableModel : public QAbstractTableModel {
   Q_OBJECT
 
 public:
-  EnvelopeTable(int year, uint8_t month, QObject *parent = nullptr);
+  EnvelopeTableModel(int year, uint8_t month, QObject *parent = nullptr);
   QVariant data(const QModelIndex &index,
                         int role) const override;
   int columnCount(const QModelIndex &parent = QModelIndex()) const override;
